@@ -1,0 +1,58 @@
+{
+    "id": "dummy_string",
+    "choices": [
+        {
+            "finish_reason": "stop",
+            "index": 1,
+            "message": {
+                "content": "dummy_string",
+                "reasoning_content": "dummy_string",
+                "tool_calls": [
+                    {
+                        "id": "dummy_string",
+                        "type": "function",
+                        "function": {
+                            "name": "dummy_string",
+                            "arguments": "dummy_string"
+                        }
+                    }
+                ],
+                "role": "assistant"
+            },
+            "logprobs": {
+                "content": [
+                    {
+                        "token": "dummy_string",
+                        "logprob": 1,
+                        "bytes": [
+                            1
+                        ],
+                        "top_logprobs": [
+                            {
+                                "token": "dummy_string",
+                                "logprob": 1,
+                                "bytes": [
+                                    1
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    ],
+    "created": 1,
+    "model": "dummy_string",
+    "system_fingerprint": "dummy_string",
+    "object": "chat.completion",
+    "usage": {
+        "completion_tokens": 1,
+        "prompt_tokens": 1,
+        "prompt_cache_hit_tokens": 1,
+        "prompt_cache_miss_tokens": 1,
+        "total_tokens": 1,
+        "completion_tokens_details": {
+            "reasoning_tokens": 1
+        }
+    }
+}
