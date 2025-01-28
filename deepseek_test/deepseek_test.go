@@ -3,6 +3,7 @@ package deepseek_test
 import (
 	"embed"
 	"encoding/json"
+	"fmt"
 	"testing"
 
 	"github.com/go-deepseek/deepseek"
@@ -28,6 +29,29 @@ func TestDeepseekChat(t *testing.T) {
 
 	require.NoError(t, err)
 	assert.NotEmpty(t, resp.Id)
+}
+
+func TestDeepseekChatStream(t *testing.T) {
+	client := deepseek.NewClient(TEST_API_KEY)
+
+	reqJson, err := testdata.ReadFile("testdata/02_req_stream_chat.json")
+	assert.NoError(t, err)
+	req := &deepseek.DeepseekChatRequest{}
+	err = json.Unmarshal(reqJson, req)
+	assert.NoError(t, err)
+
+	iter, err := client.Stream(req) // test
+
+	require.NoError(t, err)
+	assert.NotNil(t, iter)
+
+	for {
+		resp := iter.Next()
+		if resp == nil {
+			break
+		}
+		fmt.Print(resp.Choices[0].Delta.Content)
+	}
 }
 
 func TestResponse(t *testing.T) {
