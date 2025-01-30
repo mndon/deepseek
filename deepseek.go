@@ -5,10 +5,6 @@ import (
 	"time"
 )
 
-const (
-	BASE_URL = `https://api.deepseek.com`
-)
-
 type Client interface {
 	CallChatCompletionsChat(chatReq *DeepseekChatRequest) (*DeepseekChatResponse, error)
 	// CallChatCompletionsReasoner()

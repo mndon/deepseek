@@ -7,6 +7,8 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+
+	"github.com/go-deepseek/deepseek/internal"
 )
 
 const DEFAULT_TIMEOUT_SECONDS = 30
@@ -17,15 +19,19 @@ type client struct {
 }
 
 func (c *client) CallChatCompletionsChat(chatReq *DeepseekChatRequest) (*DeepseekChatResponse, error) {
+	// validate request
+	if chatReq.Stream {
+		return nil, errors.New(`err: stream should not be "true"`)
+	}
+	if chatReq.Model != "deepseek-chat" {
+		return nil, errors.New(`err: model should be "deepseek-chat"`)
+	}
 	err := ValidateRequest(chatReq)
 	if err != nil {
 		return nil, err
 	}
-	if chatReq.Stream {
-		return nil, errors.New(`err: stream should not be "true"`)
-	}
 
-	url := fmt.Sprintf(`%s/chat/completions`, BASE_URL)
+	url := fmt.Sprintf(`%s/chat/completions`, internal.BASE_URL)
 
 	in := new(bytes.Buffer)
 	err = json.NewEncoder(in).Encode(chatReq)
@@ -37,7 +43,7 @@ func (c *client) CallChatCompletionsChat(chatReq *DeepseekChatRequest) (*Deepsee
 	if err != nil {
 		return nil, err
 	}
-	SetDefaultHeaders(req, c.ApiKey)
+	setDefaultHeaders(req, c.ApiKey)
 
 	resp, err := c.Client.Do(req)
 	if err != nil {
@@ -63,15 +69,18 @@ func (c *client) CallChatCompletionsChat(chatReq *DeepseekChatRequest) (*Deepsee
 }
 
 func (c *client) StreamChatCompletionsChat(chatReq *DeepseekChatRequest) (*MessageIterator, error) {
+	if !chatReq.Stream {
+		return nil, errors.New(`err: stream should not be "false"`)
+	}
+	if chatReq.Model != "deepseek-chat" {
+		return nil, errors.New(`err: model should be "deepseek-chat"`)
+	}
 	err := ValidateRequest(chatReq)
 	if err != nil {
 		return nil, err
 	}
-	if !chatReq.Stream {
-		return nil, errors.New(`err: stream should not be "false"`)
-	}
 
-	url := fmt.Sprintf(`%s/chat/completions`, BASE_URL)
+	url := fmt.Sprintf(`%s/chat/completions`, internal.BASE_URL)
 
 	in := new(bytes.Buffer)
 	err = json.NewEncoder(in).Encode(chatReq)
@@ -83,7 +92,7 @@ func (c *client) StreamChatCompletionsChat(chatReq *DeepseekChatRequest) (*Messa
 	if err != nil {
 		return nil, err
 	}
-	SetDefaultHeaders(req, c.ApiKey)
+	setDefaultHeaders(req, c.ApiKey)
 
 	resp, err := c.Client.Do(req)
 	if err != nil {
@@ -103,7 +112,7 @@ func (c *client) StreamChatCompletionsChat(chatReq *DeepseekChatRequest) (*Messa
 	return msgIter, nil
 }
 
-func SetDefaultHeaders(req *http.Request, apiKey string) {
+func setDefaultHeaders(req *http.Request, apiKey string) {
 	req.Header.Add("Authorization", fmt.Sprintf(`Bearer %s`, apiKey))
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("Accept", "application/json")

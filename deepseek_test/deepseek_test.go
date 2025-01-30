@@ -26,6 +26,9 @@ func GetApiKey() string {
 }
 
 func TestDeepseekChat(t *testing.T) {
+	ts := NewFakeServer("testdata/01_resp_basic_chat.json")
+	defer ts.Close()
+
 	client := deepseek.NewClient(GetApiKey())
 
 	reqJson, err := testdata.ReadFile("testdata/01_req_basic_chat.json")
