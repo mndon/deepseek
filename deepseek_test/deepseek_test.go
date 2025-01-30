@@ -34,7 +34,7 @@ func TestDeepseekChat(t *testing.T) {
 	err = json.Unmarshal(reqJson, req)
 	require.NoError(t, err)
 
-	resp, err := client.Call(req) // test
+	resp, err := client.CallChatCompletionsChat(req) // test
 
 	require.NoError(t, err)
 	assert.NotEmpty(t, resp.Id)
@@ -49,7 +49,7 @@ func TestDeepseekChatStream(t *testing.T) {
 	err = json.Unmarshal(reqJson, req)
 	require.NoError(t, err)
 
-	iter, err := client.Stream(req) // test
+	iter, err := client.StreamChatCompletionsChat(req) // test
 
 	require.NoError(t, err)
 	assert.NotNil(t, iter)

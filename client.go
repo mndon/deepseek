@@ -7,32 +7,16 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"time"
 )
 
 const DEFAULT_TIMEOUT_SECONDS = 30
 
-type Client struct {
-	http.Client
+type client struct {
+	*http.Client
 	ApiKey string
 }
 
-func NewClient(apiKey string) *Client {
-	return NewClientWithTimeout(apiKey, DEFAULT_TIMEOUT_SECONDS)
-}
-
-func NewClientWithTimeout(apiKey string, timeoutSeconds int) *Client {
-	timeout := time.Second * time.Duration(timeoutSeconds)
-	c := &Client{
-		ApiKey: apiKey,
-		Client: http.Client{
-			Timeout: timeout,
-		},
-	}
-	return c
-}
-
-func (c *Client) Call(chatReq *DeepseekChatRequest) (*DeepseekChatResponse, error) {
+func (c *client) CallChatCompletionsChat(chatReq *DeepseekChatRequest) (*DeepseekChatResponse, error) {
 	err := ValidateRequest(chatReq)
 	if err != nil {
 		return nil, err
@@ -78,7 +62,7 @@ func (c *Client) Call(chatReq *DeepseekChatRequest) (*DeepseekChatResponse, erro
 	return chatResp, err
 }
 
-func (c *Client) Stream(chatReq *DeepseekChatRequest) (*MessageIterator, error) {
+func (c *client) StreamChatCompletionsChat(chatReq *DeepseekChatRequest) (*MessageIterator, error) {
 	err := ValidateRequest(chatReq)
 	if err != nil {
 		return nil, err
