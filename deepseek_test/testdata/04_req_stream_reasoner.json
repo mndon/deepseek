@@ -1,0 +1,10 @@
+{
+    "model": "deepseek-reasoner",
+    "messages": [
+        {
+            "role": "user",
+            "content": "9.11 and 9.8, which is greater?"
+        }
+    ],
+    "stream": true
+}

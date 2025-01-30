@@ -7,10 +7,10 @@ import (
 
 type Client interface {
 	CallChatCompletionsChat(chatReq *DeepseekChatRequest) (*DeepseekChatResponse, error)
-	// CallChatCompletionsReasoner()
+	CallChatCompletionsReasoner(chatReq *DeepseekChatRequest) (*DeepseekChatResponse, error)
 
 	StreamChatCompletionsChat(chatReq *DeepseekChatRequest) (*MessageIterator, error)
-	// StreamChatCompletionsReasoner()
+	StreamChatCompletionsReasoner(chatReq *DeepseekChatRequest) (*MessageIterator, error)
 }
 
 func NewClient(apiKey string) Client {

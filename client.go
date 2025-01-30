@@ -21,7 +21,7 @@ type client struct {
 func (c *client) CallChatCompletionsChat(chatReq *DeepseekChatRequest) (*DeepseekChatResponse, error) {
 	// validate request
 	if chatReq.Stream {
-		return nil, errors.New(`err: stream should not be "true"`)
+		return nil, errors.New(`err: stream should be "false"`)
 	}
 	if chatReq.Model != "deepseek-chat" {
 		return nil, errors.New(`err: model should be "deepseek-chat"`)
@@ -31,36 +31,14 @@ func (c *client) CallChatCompletionsChat(chatReq *DeepseekChatRequest) (*Deepsee
 		return nil, err
 	}
 
-	url := fmt.Sprintf(`%s/chat/completions`, internal.BASE_URL)
-
-	in := new(bytes.Buffer)
-	err = json.NewEncoder(in).Encode(chatReq)
+	respBody, err := c.do(chatReq)
 	if err != nil {
 		return nil, err
 	}
-
-	req, err := http.NewRequest(http.MethodPost, url, in)
-	if err != nil {
-		return nil, err
-	}
-	setDefaultHeaders(req, c.ApiKey)
-
-	resp, err := c.Client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != 200 {
-		errMsg, err := io.ReadAll(resp.Body)
-		if err != nil {
-			return nil, err
-		}
-		return nil, errors.New(string(errMsg))
-	}
+	defer respBody.Close()
 
 	chatResp := &DeepseekChatResponse{}
-	err = json.NewDecoder(resp.Body).Decode(chatResp)
+	err = json.NewDecoder(respBody).Decode(chatResp)
 	if err != nil {
 		return nil, err
 	}
@@ -70,7 +48,7 @@ func (c *client) CallChatCompletionsChat(chatReq *DeepseekChatRequest) (*Deepsee
 
 func (c *client) StreamChatCompletionsChat(chatReq *DeepseekChatRequest) (*MessageIterator, error) {
 	if !chatReq.Stream {
-		return nil, errors.New(`err: stream should not be "false"`)
+		return nil, errors.New(`err: stream should be "true"`)
 	}
 	if chatReq.Model != "deepseek-chat" {
 		return nil, errors.New(`err: model should be "deepseek-chat"`)
@@ -80,10 +58,69 @@ func (c *client) StreamChatCompletionsChat(chatReq *DeepseekChatRequest) (*Messa
 		return nil, err
 	}
 
+	respBody, err := c.do(chatReq)
+	if err != nil {
+		return nil, err
+	}
+
+	msgIter := NewMessageIterator(respBody)
+	return msgIter, nil
+}
+
+func (c *client) CallChatCompletionsReasoner(chatReq *DeepseekChatRequest) (*DeepseekChatResponse, error) {
+	// validate request
+	if chatReq.Stream {
+		return nil, errors.New(`err: stream should be "false"`)
+	}
+	if chatReq.Model != "deepseek-reasoner" {
+		return nil, errors.New(`err: model should be "deepseek-reasoner"`)
+	}
+	err := ValidateRequest(chatReq)
+	if err != nil {
+		return nil, err
+	}
+
+	respBody, err := c.do(chatReq)
+	if err != nil {
+		return nil, err
+	}
+	defer respBody.Close()
+
+	chatResp := &DeepseekChatResponse{}
+	err = json.NewDecoder(respBody).Decode(chatResp)
+	if err != nil {
+		return nil, err
+	}
+
+	return chatResp, err
+}
+
+func (c *client) StreamChatCompletionsReasoner(chatReq *DeepseekChatRequest) (*MessageIterator, error) {
+	if !chatReq.Stream {
+		return nil, errors.New(`err: stream should be "true"`)
+	}
+	if chatReq.Model != "deepseek-reasoner" {
+		return nil, errors.New(`err: model should be "deepseek-reasoner"`)
+	}
+	err := ValidateRequest(chatReq)
+	if err != nil {
+		return nil, err
+	}
+
+	respBody, err := c.do(chatReq)
+	if err != nil {
+		return nil, err
+	}
+
+	msgIter := NewMessageIterator(respBody)
+	return msgIter, nil
+}
+
+func (c *client) do(chatReq *DeepseekChatRequest) (io.ReadCloser, error) {
 	url := fmt.Sprintf(`%s/chat/completions`, internal.BASE_URL)
 
 	in := new(bytes.Buffer)
-	err = json.NewEncoder(in).Encode(chatReq)
+	err := json.NewEncoder(in).Encode(chatReq)
 	if err != nil {
 		return nil, err
 	}
@@ -108,8 +145,7 @@ func (c *client) StreamChatCompletionsChat(chatReq *DeepseekChatRequest) (*Messa
 		return nil, errors.New(string(errMsg))
 	}
 
-	msgIter := NewMessageIterator(resp.Body)
-	return msgIter, nil
+	return resp.Body, nil
 }
 
 func setDefaultHeaders(req *http.Request, apiKey string) {

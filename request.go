@@ -19,8 +19,9 @@ type DeepseekChatRequest struct {
 }
 
 type Message struct {
-	Role    string `json:"role"`    // TODO: VN -- support roles like system, user, assistant, tool
-	Content string `json:"content"` // TODO: VN -- make it []byte
+	Role             string `json:"role"`              // TODO: VN -- support roles like system, user, assistant, tool
+	Content          string `json:"content"`           // TODO: VN -- make it []byte
+	ReasoningContent string `json:"reasoning_content"` // TODO: VN -- make it []byte
 }
 
 type ResponseFormat struct {

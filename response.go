@@ -19,7 +19,8 @@ type Choice struct {
 }
 
 type Delta struct {
-	Content string `json:"content"`
+	Content          string `json:"content"`           // TODO: VN -- make it []byte
+	ReasoningContent string `json:"reasoning_content"` // TODO: VN -- make it []byte
 }
 
 type Usage struct {
