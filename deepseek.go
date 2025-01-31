@@ -12,8 +12,8 @@ type Client interface {
 	CallChatCompletionsChat(chatReq *request.ChatCompletionsRequest) (*response.ChatCompletionsResponse, error)
 	CallChatCompletionsReasoner(chatReq *request.ChatCompletionsRequest) (*response.ChatCompletionsResponse, error)
 
-	StreamChatCompletionsChat(chatReq *request.ChatCompletionsRequest) (*response.MessageIterator, error)
-	StreamChatCompletionsReasoner(chatReq *request.ChatCompletionsRequest) (*response.MessageIterator, error)
+	StreamChatCompletionsChat(chatReq *request.ChatCompletionsRequest) (response.StreamReader, error)
+	StreamChatCompletionsReasoner(chatReq *request.ChatCompletionsRequest) (response.StreamReader, error)
 
 	// PingChatCompletionsChat() (*DeepseekChatResponse, error) // TODO: VN -- impl
 }

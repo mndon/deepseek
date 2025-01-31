@@ -58,7 +58,7 @@ func (c *Client) CallChatCompletionsChat(chatReq *request.ChatCompletionsRequest
 	return chatResp, err
 }
 
-func (c *Client) StreamChatCompletionsChat(chatReq *request.ChatCompletionsRequest) (*response.MessageIterator, error) {
+func (c *Client) StreamChatCompletionsChat(chatReq *request.ChatCompletionsRequest) (response.StreamReader, error) {
 	// validate request
 	if !chatReq.Stream {
 		return nil, errors.New(`err: stream should be "true"`)
@@ -77,8 +77,8 @@ func (c *Client) StreamChatCompletionsChat(chatReq *request.ChatCompletionsReque
 		return nil, err
 	}
 
-	msgIter := response.NewMessageIterator(respBody)
-	return msgIter, nil
+	sr := response.NewStreamReader(respBody)
+	return sr, nil
 }
 
 func (c *Client) CallChatCompletionsReasoner(chatReq *request.ChatCompletionsRequest) (*response.ChatCompletionsResponse, error) {
@@ -110,7 +110,7 @@ func (c *Client) CallChatCompletionsReasoner(chatReq *request.ChatCompletionsReq
 	return chatResp, err
 }
 
-func (c *Client) StreamChatCompletionsReasoner(chatReq *request.ChatCompletionsRequest) (*response.MessageIterator, error) {
+func (c *Client) StreamChatCompletionsReasoner(chatReq *request.ChatCompletionsRequest) (response.StreamReader, error) {
 	// validate request
 	if !chatReq.Stream {
 		return nil, errors.New(`err: stream should be "true"`)
@@ -129,8 +129,8 @@ func (c *Client) StreamChatCompletionsReasoner(chatReq *request.ChatCompletionsR
 		return nil, err
 	}
 
-	msgIter := response.NewMessageIterator(respBody)
-	return msgIter, nil
+	sr := response.NewStreamReader(respBody)
+	return sr, nil
 }
 
 func (c *Client) do(chatReq *request.ChatCompletionsRequest) (io.ReadCloser, error) {

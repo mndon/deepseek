@@ -4,6 +4,7 @@ import (
 	"embed"
 	"encoding/json"
 	"fmt"
+	"io"
 	"os"
 	"testing"
 
@@ -46,6 +47,9 @@ func TestCallChat(t *testing.T) {
 }
 
 func TestStreamChat(t *testing.T) {
+	// ts := NewFakeServer("testdata/02_resp_stream_chat.json")
+	// defer ts.Close()
+
 	client := deepseek.NewClient(GetApiKey())
 
 	reqJson, err := testdata.ReadFile("testdata/02_req_stream_chat.json")
@@ -60,10 +64,14 @@ func TestStreamChat(t *testing.T) {
 	assert.NotNil(t, iter)
 
 	for {
-		resp := iter.Next()
-		if resp == nil {
-			break
+		resp, err := iter.Read()
+		if err != nil {
+			if err == io.EOF {
+				break
+			}
+			panic(err)
 		}
+		assert.NotNil(t, resp)
 		assert.NotEmpty(t, resp.Id)
 		fmt.Print(resp.Choices[0].Delta.Content)
 	}
@@ -105,10 +113,14 @@ func TestStreamReasoner(t *testing.T) {
 	assert.NotNil(t, iter)
 
 	for {
-		resp := iter.Next()
-		if resp == nil {
-			break
+		resp, err := iter.Read()
+		if err != nil {
+			if err == io.EOF {
+				break
+			}
+			panic(err)
 		}
+		assert.NotNil(t, resp)
 		assert.NotEmpty(t, resp.Id)
 		if resp.Choices[0].Delta.Content != "" {
 			fmt.Print(resp.Choices[0].Delta.Content)
