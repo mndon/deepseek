@@ -1,6 +1,6 @@
 package deepseek
 
-type DeepseekChatRequest struct {
+type ChatCompletionsRequest struct {
 	Messages         []*Message      `json:"messages"`
 	Model            string          `json:"model"`
 	FrequencyPenalty int             `json:"frequency_penalty,omitempty"`

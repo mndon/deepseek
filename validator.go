@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-func ValidateRequest(req *DeepseekChatRequest) error {
+func ValidateChatCompletionsRequest(req *ChatCompletionsRequest) error {
 	if req == nil {
 		return errors.New("err: input request is nil")
 	}

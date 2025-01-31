@@ -1,6 +1,6 @@
 package deepseek
 
-type DeepseekChatResponse struct {
+type ChatCompletionsResponse struct {
 	Id                string    `json:"id"`
 	Choices           []*Choice `json:"choices"`
 	Created           int       `json:"created"`

@@ -11,14 +11,12 @@ import (
 	"github.com/go-deepseek/deepseek/internal"
 )
 
-const DEFAULT_TIMEOUT_SECONDS = 30
-
 type client struct {
 	*http.Client
 	ApiKey string
 }
 
-func (c *client) CallChatCompletionsChat(chatReq *DeepseekChatRequest) (*DeepseekChatResponse, error) {
+func (c *client) CallChatCompletionsChat(chatReq *ChatCompletionsRequest) (*ChatCompletionsResponse, error) {
 	// validate request
 	if chatReq.Stream {
 		return nil, errors.New(`err: stream should be "false"`)
@@ -26,18 +24,19 @@ func (c *client) CallChatCompletionsChat(chatReq *DeepseekChatRequest) (*Deepsee
 	if chatReq.Model != "deepseek-chat" {
 		return nil, errors.New(`err: model should be "deepseek-chat"`)
 	}
-	err := ValidateRequest(chatReq)
+	err := ValidateChatCompletionsRequest(chatReq)
 	if err != nil {
 		return nil, err
 	}
 
+	// call api
 	respBody, err := c.do(chatReq)
 	if err != nil {
 		return nil, err
 	}
 	defer respBody.Close()
 
-	chatResp := &DeepseekChatResponse{}
+	chatResp := &ChatCompletionsResponse{}
 	err = json.NewDecoder(respBody).Decode(chatResp)
 	if err != nil {
 		return nil, err
@@ -46,18 +45,20 @@ func (c *client) CallChatCompletionsChat(chatReq *DeepseekChatRequest) (*Deepsee
 	return chatResp, err
 }
 
-func (c *client) StreamChatCompletionsChat(chatReq *DeepseekChatRequest) (*MessageIterator, error) {
+func (c *client) StreamChatCompletionsChat(chatReq *ChatCompletionsRequest) (*MessageIterator, error) {
+	// validate request
 	if !chatReq.Stream {
 		return nil, errors.New(`err: stream should be "true"`)
 	}
 	if chatReq.Model != "deepseek-chat" {
 		return nil, errors.New(`err: model should be "deepseek-chat"`)
 	}
-	err := ValidateRequest(chatReq)
+	err := ValidateChatCompletionsRequest(chatReq)
 	if err != nil {
 		return nil, err
 	}
 
+	// call api
 	respBody, err := c.do(chatReq)
 	if err != nil {
 		return nil, err
@@ -67,7 +68,7 @@ func (c *client) StreamChatCompletionsChat(chatReq *DeepseekChatRequest) (*Messa
 	return msgIter, nil
 }
 
-func (c *client) CallChatCompletionsReasoner(chatReq *DeepseekChatRequest) (*DeepseekChatResponse, error) {
+func (c *client) CallChatCompletionsReasoner(chatReq *ChatCompletionsRequest) (*ChatCompletionsResponse, error) {
 	// validate request
 	if chatReq.Stream {
 		return nil, errors.New(`err: stream should be "false"`)
@@ -75,18 +76,19 @@ func (c *client) CallChatCompletionsReasoner(chatReq *DeepseekChatRequest) (*Dee
 	if chatReq.Model != "deepseek-reasoner" {
 		return nil, errors.New(`err: model should be "deepseek-reasoner"`)
 	}
-	err := ValidateRequest(chatReq)
+	err := ValidateChatCompletionsRequest(chatReq)
 	if err != nil {
 		return nil, err
 	}
 
+	// call api
 	respBody, err := c.do(chatReq)
 	if err != nil {
 		return nil, err
 	}
 	defer respBody.Close()
 
-	chatResp := &DeepseekChatResponse{}
+	chatResp := &ChatCompletionsResponse{}
 	err = json.NewDecoder(respBody).Decode(chatResp)
 	if err != nil {
 		return nil, err
@@ -95,18 +97,20 @@ func (c *client) CallChatCompletionsReasoner(chatReq *DeepseekChatRequest) (*Dee
 	return chatResp, err
 }
 
-func (c *client) StreamChatCompletionsReasoner(chatReq *DeepseekChatRequest) (*MessageIterator, error) {
+func (c *client) StreamChatCompletionsReasoner(chatReq *ChatCompletionsRequest) (*MessageIterator, error) {
+	// validate request
 	if !chatReq.Stream {
 		return nil, errors.New(`err: stream should be "true"`)
 	}
 	if chatReq.Model != "deepseek-reasoner" {
 		return nil, errors.New(`err: model should be "deepseek-reasoner"`)
 	}
-	err := ValidateRequest(chatReq)
+	err := ValidateChatCompletionsRequest(chatReq)
 	if err != nil {
 		return nil, err
 	}
 
+	// call api
 	respBody, err := c.do(chatReq)
 	if err != nil {
 		return nil, err
@@ -116,7 +120,7 @@ func (c *client) StreamChatCompletionsReasoner(chatReq *DeepseekChatRequest) (*M
 	return msgIter, nil
 }
 
-func (c *client) do(chatReq *DeepseekChatRequest) (io.ReadCloser, error) {
+func (c *client) do(chatReq *ChatCompletionsRequest) (io.ReadCloser, error) {
 	url := fmt.Sprintf(`%s/chat/completions`, internal.BASE_URL)
 
 	in := new(bytes.Buffer)

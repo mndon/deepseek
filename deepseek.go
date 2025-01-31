@@ -3,18 +3,22 @@ package deepseek
 import (
 	"net/http"
 	"time"
+
+	"github.com/go-deepseek/deepseek/internal"
 )
 
 type Client interface {
-	CallChatCompletionsChat(chatReq *DeepseekChatRequest) (*DeepseekChatResponse, error)
-	CallChatCompletionsReasoner(chatReq *DeepseekChatRequest) (*DeepseekChatResponse, error)
+	CallChatCompletionsChat(chatReq *ChatCompletionsRequest) (*ChatCompletionsResponse, error)
+	CallChatCompletionsReasoner(chatReq *ChatCompletionsRequest) (*ChatCompletionsResponse, error)
 
-	StreamChatCompletionsChat(chatReq *DeepseekChatRequest) (*MessageIterator, error)
-	StreamChatCompletionsReasoner(chatReq *DeepseekChatRequest) (*MessageIterator, error)
+	StreamChatCompletionsChat(chatReq *ChatCompletionsRequest) (*MessageIterator, error)
+	StreamChatCompletionsReasoner(chatReq *ChatCompletionsRequest) (*MessageIterator, error)
+
+	// PingChatCompletionsChat() (*DeepseekChatResponse, error) // TODO: VN -- impl
 }
 
 func NewClient(apiKey string) Client {
-	return NewClientWithTimeout(apiKey, DEFAULT_TIMEOUT_SECONDS)
+	return NewClientWithTimeout(apiKey, internal.DEFAULT_TIMEOUT_SECONDS)
 }
 
 func NewClientWithTimeout(apiKey string, timeoutSeconds int) Client {

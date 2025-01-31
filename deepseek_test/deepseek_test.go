@@ -26,14 +26,14 @@ func GetApiKey() string {
 }
 
 func TestCallChat(t *testing.T) {
-	ts := NewFakeServer("testdata/01_resp_basic_chat.json")
-	defer ts.Close()
+	// ts := NewFakeServer("testdata/01_resp_basic_chat.json")
+	// defer ts.Close()
 
 	client := deepseek.NewClient(GetApiKey())
 
 	reqJson, err := testdata.ReadFile("testdata/01_req_basic_chat.json")
 	require.NoError(t, err)
-	req := &deepseek.DeepseekChatRequest{}
+	req := &deepseek.ChatCompletionsRequest{}
 	err = json.Unmarshal(reqJson, req)
 	require.NoError(t, err)
 
@@ -48,7 +48,7 @@ func TestStreamChat(t *testing.T) {
 
 	reqJson, err := testdata.ReadFile("testdata/02_req_stream_chat.json")
 	require.NoError(t, err)
-	req := &deepseek.DeepseekChatRequest{}
+	req := &deepseek.ChatCompletionsRequest{}
 	err = json.Unmarshal(reqJson, req)
 	require.NoError(t, err)
 
@@ -74,7 +74,7 @@ func TestCallReasoner(t *testing.T) {
 
 	reqJson, err := testdata.ReadFile("testdata/03_req_basic_reasoner.json")
 	require.NoError(t, err)
-	req := &deepseek.DeepseekChatRequest{}
+	req := &deepseek.ChatCompletionsRequest{}
 	err = json.Unmarshal(reqJson, req)
 	require.NoError(t, err)
 
@@ -85,14 +85,14 @@ func TestCallReasoner(t *testing.T) {
 }
 
 func TestStreamReasoner(t *testing.T) {
-	ts := NewFakeSteamServer("testdata/04_resp_stream_reasoner.json")
-	defer ts.Close()
+	// ts := NewFakeSteamServer("testdata/04_resp_stream_reasoner.json")
+	// defer ts.Close()
 
 	client := deepseek.NewClientWithTimeout(GetApiKey(), 120)
 
 	reqJson, err := testdata.ReadFile("testdata/04_req_stream_reasoner.json")
 	require.NoError(t, err)
-	req := &deepseek.DeepseekChatRequest{}
+	req := &deepseek.ChatCompletionsRequest{}
 	err = json.Unmarshal(reqJson, req)
 	require.NoError(t, err)
 
@@ -118,7 +118,7 @@ func TestResponse(t *testing.T) {
 	respJson, err := testdata.ReadFile("testdata/51_full_response.json")
 	require.NoError(t, err)
 
-	resp := &deepseek.DeepseekChatResponse{}
+	resp := &deepseek.ChatCompletionsResponse{}
 	json.Unmarshal(respJson, resp)
 
 	wantStr := "dummy_string"
