@@ -64,6 +64,7 @@ func TestStreamChat(t *testing.T) {
 		if resp == nil {
 			break
 		}
+		assert.NotEmpty(t, resp.Id)
 		fmt.Print(resp.Choices[0].Delta.Content)
 	}
 }
@@ -108,6 +109,7 @@ func TestStreamReasoner(t *testing.T) {
 		if resp == nil {
 			break
 		}
+		assert.NotEmpty(t, resp.Id)
 		if resp.Choices[0].Delta.Content != "" {
 			fmt.Print(resp.Choices[0].Delta.Content)
 		} else {

@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"time"
 
 	"github.com/go-deepseek/deepseek/internal"
 	"github.com/go-deepseek/deepseek/request"
@@ -15,7 +16,17 @@ import (
 
 type Client struct {
 	*http.Client
-	ApiKey string
+	apiKey string
+}
+
+func NewClient(apiKey string, timeoutSeconds int) *Client {
+	c := &Client{
+		apiKey: apiKey,
+		Client: &http.Client{
+			Timeout: time.Second * time.Duration(timeoutSeconds),
+		},
+	}
+	return c
 }
 
 func (c *Client) CallChatCompletionsChat(chatReq *request.ChatCompletionsRequest) (*response.ChatCompletionsResponse, error) {
@@ -135,7 +146,7 @@ func (c *Client) do(chatReq *request.ChatCompletionsRequest) (io.ReadCloser, err
 	if err != nil {
 		return nil, err
 	}
-	setDefaultHeaders(req, c.ApiKey)
+	setDefaultHeaders(req, c.apiKey)
 
 	resp, err := c.Client.Do(req)
 	if err != nil {

@@ -1,14 +1,12 @@
 package deepseek
 
 import (
-	"net/http"
-	"time"
-
 	"github.com/go-deepseek/deepseek/client"
-	"github.com/go-deepseek/deepseek/internal"
 	"github.com/go-deepseek/deepseek/request"
 	"github.com/go-deepseek/deepseek/response"
 )
+
+const DEFAULT_TIMEOUT_SECONDS = 60
 
 type Client interface {
 	CallChatCompletionsChat(chatReq *request.ChatCompletionsRequest) (*response.ChatCompletionsResponse, error)
@@ -21,16 +19,9 @@ type Client interface {
 }
 
 func NewClient(apiKey string) Client {
-	return NewClientWithTimeout(apiKey, internal.DEFAULT_TIMEOUT_SECONDS)
+	return NewClientWithTimeout(apiKey, DEFAULT_TIMEOUT_SECONDS)
 }
 
 func NewClientWithTimeout(apiKey string, timeoutSeconds int) Client {
-	timeout := time.Second * time.Duration(timeoutSeconds)
-	c := &client.Client{
-		ApiKey: apiKey,
-		Client: &http.Client{
-			Timeout: timeout,
-		},
-	}
-	return c
+	return client.NewClient(apiKey, timeoutSeconds)
 }
