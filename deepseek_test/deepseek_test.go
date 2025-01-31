@@ -8,6 +8,8 @@ import (
 	"testing"
 
 	"github.com/go-deepseek/deepseek"
+	"github.com/go-deepseek/deepseek/request"
+	"github.com/go-deepseek/deepseek/response"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -33,7 +35,7 @@ func TestCallChat(t *testing.T) {
 
 	reqJson, err := testdata.ReadFile("testdata/01_req_basic_chat.json")
 	require.NoError(t, err)
-	req := &deepseek.ChatCompletionsRequest{}
+	req := &request.ChatCompletionsRequest{}
 	err = json.Unmarshal(reqJson, req)
 	require.NoError(t, err)
 
@@ -48,7 +50,7 @@ func TestStreamChat(t *testing.T) {
 
 	reqJson, err := testdata.ReadFile("testdata/02_req_stream_chat.json")
 	require.NoError(t, err)
-	req := &deepseek.ChatCompletionsRequest{}
+	req := &request.ChatCompletionsRequest{}
 	err = json.Unmarshal(reqJson, req)
 	require.NoError(t, err)
 
@@ -74,7 +76,7 @@ func TestCallReasoner(t *testing.T) {
 
 	reqJson, err := testdata.ReadFile("testdata/03_req_basic_reasoner.json")
 	require.NoError(t, err)
-	req := &deepseek.ChatCompletionsRequest{}
+	req := &request.ChatCompletionsRequest{}
 	err = json.Unmarshal(reqJson, req)
 	require.NoError(t, err)
 
@@ -92,7 +94,7 @@ func TestStreamReasoner(t *testing.T) {
 
 	reqJson, err := testdata.ReadFile("testdata/04_req_stream_reasoner.json")
 	require.NoError(t, err)
-	req := &deepseek.ChatCompletionsRequest{}
+	req := &request.ChatCompletionsRequest{}
 	err = json.Unmarshal(reqJson, req)
 	require.NoError(t, err)
 
@@ -118,7 +120,7 @@ func TestResponse(t *testing.T) {
 	respJson, err := testdata.ReadFile("testdata/51_full_response.json")
 	require.NoError(t, err)
 
-	resp := &deepseek.ChatCompletionsResponse{}
+	resp := &response.ChatCompletionsResponse{}
 	json.Unmarshal(respJson, resp)
 
 	wantStr := "dummy_string"

@@ -1,4 +1,4 @@
-package deepseek
+package response
 
 type ChatCompletionsResponse struct {
 	Id                string    `json:"id"`
@@ -16,6 +16,12 @@ type Choice struct {
 	Message      *Message  `json:"message"`
 	Delta        *Delta    `json:"delta"` // TODO: VN -- mesage and delta in one struct or diff?
 	Logprobs     *Logprobs `json:"logprobs"`
+}
+
+type Message struct {
+	Role             string `json:"role"`              // TODO: VN -- support roles like system, user, assistant, tool
+	Content          string `json:"content"`           // TODO: VN -- make it []byte
+	ReasoningContent string `json:"reasoning_content"` // TODO: VN -- make it []byte
 }
 
 type Delta struct {

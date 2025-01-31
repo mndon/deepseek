@@ -1,4 +1,4 @@
-package deepseek
+package response
 
 import (
 	"bufio"

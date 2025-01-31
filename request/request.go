@@ -1,4 +1,4 @@
-package deepseek
+package request
 
 type ChatCompletionsRequest struct {
 	Messages         []*Message      `json:"messages"`

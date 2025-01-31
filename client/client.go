@@ -1,4 +1,4 @@
-package deepseek
+package client
 
 import (
 	"bytes"
@@ -9,14 +9,16 @@ import (
 	"net/http"
 
 	"github.com/go-deepseek/deepseek/internal"
+	"github.com/go-deepseek/deepseek/request"
+	"github.com/go-deepseek/deepseek/response"
 )
 
-type client struct {
+type Client struct {
 	*http.Client
 	ApiKey string
 }
 
-func (c *client) CallChatCompletionsChat(chatReq *ChatCompletionsRequest) (*ChatCompletionsResponse, error) {
+func (c *Client) CallChatCompletionsChat(chatReq *request.ChatCompletionsRequest) (*response.ChatCompletionsResponse, error) {
 	// validate request
 	if chatReq.Stream {
 		return nil, errors.New(`err: stream should be "false"`)
@@ -24,7 +26,7 @@ func (c *client) CallChatCompletionsChat(chatReq *ChatCompletionsRequest) (*Chat
 	if chatReq.Model != "deepseek-chat" {
 		return nil, errors.New(`err: model should be "deepseek-chat"`)
 	}
-	err := ValidateChatCompletionsRequest(chatReq)
+	err := request.ValidateChatCompletionsRequest(chatReq)
 	if err != nil {
 		return nil, err
 	}
@@ -36,7 +38,7 @@ func (c *client) CallChatCompletionsChat(chatReq *ChatCompletionsRequest) (*Chat
 	}
 	defer respBody.Close()
 
-	chatResp := &ChatCompletionsResponse{}
+	chatResp := &response.ChatCompletionsResponse{}
 	err = json.NewDecoder(respBody).Decode(chatResp)
 	if err != nil {
 		return nil, err
@@ -45,7 +47,7 @@ func (c *client) CallChatCompletionsChat(chatReq *ChatCompletionsRequest) (*Chat
 	return chatResp, err
 }
 
-func (c *client) StreamChatCompletionsChat(chatReq *ChatCompletionsRequest) (*MessageIterator, error) {
+func (c *Client) StreamChatCompletionsChat(chatReq *request.ChatCompletionsRequest) (*response.MessageIterator, error) {
 	// validate request
 	if !chatReq.Stream {
 		return nil, errors.New(`err: stream should be "true"`)
@@ -53,7 +55,7 @@ func (c *client) StreamChatCompletionsChat(chatReq *ChatCompletionsRequest) (*Me
 	if chatReq.Model != "deepseek-chat" {
 		return nil, errors.New(`err: model should be "deepseek-chat"`)
 	}
-	err := ValidateChatCompletionsRequest(chatReq)
+	err := request.ValidateChatCompletionsRequest(chatReq)
 	if err != nil {
 		return nil, err
 	}
@@ -64,11 +66,11 @@ func (c *client) StreamChatCompletionsChat(chatReq *ChatCompletionsRequest) (*Me
 		return nil, err
 	}
 
-	msgIter := NewMessageIterator(respBody)
+	msgIter := response.NewMessageIterator(respBody)
 	return msgIter, nil
 }
 
-func (c *client) CallChatCompletionsReasoner(chatReq *ChatCompletionsRequest) (*ChatCompletionsResponse, error) {
+func (c *Client) CallChatCompletionsReasoner(chatReq *request.ChatCompletionsRequest) (*response.ChatCompletionsResponse, error) {
 	// validate request
 	if chatReq.Stream {
 		return nil, errors.New(`err: stream should be "false"`)
@@ -76,7 +78,7 @@ func (c *client) CallChatCompletionsReasoner(chatReq *ChatCompletionsRequest) (*
 	if chatReq.Model != "deepseek-reasoner" {
 		return nil, errors.New(`err: model should be "deepseek-reasoner"`)
 	}
-	err := ValidateChatCompletionsRequest(chatReq)
+	err := request.ValidateChatCompletionsRequest(chatReq)
 	if err != nil {
 		return nil, err
 	}
@@ -88,7 +90,7 @@ func (c *client) CallChatCompletionsReasoner(chatReq *ChatCompletionsRequest) (*
 	}
 	defer respBody.Close()
 
-	chatResp := &ChatCompletionsResponse{}
+	chatResp := &response.ChatCompletionsResponse{}
 	err = json.NewDecoder(respBody).Decode(chatResp)
 	if err != nil {
 		return nil, err
@@ -97,7 +99,7 @@ func (c *client) CallChatCompletionsReasoner(chatReq *ChatCompletionsRequest) (*
 	return chatResp, err
 }
 
-func (c *client) StreamChatCompletionsReasoner(chatReq *ChatCompletionsRequest) (*MessageIterator, error) {
+func (c *Client) StreamChatCompletionsReasoner(chatReq *request.ChatCompletionsRequest) (*response.MessageIterator, error) {
 	// validate request
 	if !chatReq.Stream {
 		return nil, errors.New(`err: stream should be "true"`)
@@ -105,7 +107,7 @@ func (c *client) StreamChatCompletionsReasoner(chatReq *ChatCompletionsRequest) 
 	if chatReq.Model != "deepseek-reasoner" {
 		return nil, errors.New(`err: model should be "deepseek-reasoner"`)
 	}
-	err := ValidateChatCompletionsRequest(chatReq)
+	err := request.ValidateChatCompletionsRequest(chatReq)
 	if err != nil {
 		return nil, err
 	}
@@ -116,11 +118,11 @@ func (c *client) StreamChatCompletionsReasoner(chatReq *ChatCompletionsRequest) 
 		return nil, err
 	}
 
-	msgIter := NewMessageIterator(respBody)
+	msgIter := response.NewMessageIterator(respBody)
 	return msgIter, nil
 }
 
-func (c *client) do(chatReq *ChatCompletionsRequest) (io.ReadCloser, error) {
+func (c *Client) do(chatReq *request.ChatCompletionsRequest) (io.ReadCloser, error) {
 	url := fmt.Sprintf(`%s/chat/completions`, internal.BASE_URL)
 
 	in := new(bytes.Buffer)
