@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/go-deepseek/deepseek/config"
 	"github.com/go-deepseek/deepseek/internal"
 	"github.com/go-deepseek/deepseek/request"
 	"github.com/go-deepseek/deepseek/response"
@@ -19,14 +20,21 @@ type Client struct {
 	apiKey string
 }
 
-func NewClient(apiKey string, timeoutSeconds int) *Client {
+func NewClient(config config.Config) (*Client, error) {
+	if config.ApiKey == "" {
+		return nil, errors.New("err: api key should not be blank")
+	}
+	if config.TimeoutSeconds == 0 {
+		return nil, errors.New("err: timeout seconds should not be 0")
+	}
+
 	c := &Client{
-		apiKey: apiKey,
+		apiKey: config.ApiKey,
 		Client: &http.Client{
-			Timeout: time.Second * time.Duration(timeoutSeconds),
+			Timeout: time.Second * time.Duration(config.TimeoutSeconds),
 		},
 	}
-	return c
+	return c, nil
 }
 
 func (c *Client) CallChatCompletionsChat(chatReq *request.ChatCompletionsRequest) (*response.ChatCompletionsResponse, error) {

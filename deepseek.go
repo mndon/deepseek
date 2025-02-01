@@ -2,6 +2,7 @@ package deepseek
 
 import (
 	"github.com/go-deepseek/deepseek/client"
+	"github.com/go-deepseek/deepseek/config"
 	"github.com/go-deepseek/deepseek/request"
 	"github.com/go-deepseek/deepseek/response"
 )
@@ -23,10 +24,14 @@ type Client interface {
 	// PingChatCompletionsChat() (*DeepseekChatResponse, error) // TODO: VN -- impl
 }
 
-func NewClient(apiKey string) Client {
-	return NewClientWithTimeout(apiKey, DEFAULT_TIMEOUT_SECONDS)
+func NewClient(apiKey string) (Client, error) {
+	config := config.Config{
+		ApiKey:         apiKey,
+		TimeoutSeconds: DEFAULT_TIMEOUT_SECONDS,
+	}
+	return NewClientWithConfig(config)
 }
 
-func NewClientWithTimeout(apiKey string, timeoutSeconds int) Client {
-	return client.NewClient(apiKey, timeoutSeconds)
+func NewClientWithConfig(config config.Config) (Client, error) {
+	return client.NewClient(config)
 }
