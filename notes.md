@@ -1,7 +1,42 @@
-** TODO
+### Error handling
 - error-code: https://api-docs.deepseek.com/quick_start/error_codes
 
-** Sample Payload
+code=401
+```
+{
+  "error": {
+    "message": "Authentication Fails (no such user)",
+    "type": "authentication_error",
+    "param": null,
+    "code": "invalid_request_error"
+  }
+}
+```
+
+code=400
+```
+{
+  "error": {
+    "message": "Invalid frequency_penalty value, the valid range of frequency_penalty is [-2, 2]",
+    "type": "invalid_request_error",
+    "param": null,
+    "code": "invalid_request_error"
+  }
+}
+```
+
+code=422 (when model not set)
+```
+Failed to deserialize the JSON body into the target type: missing field `model` at line 1 column 164
+```
+
+### Rate limit
+- rate-limit: https://api-docs.deepseek.com/quick_start/rate_limit
+- Non-streaming requests: Continuously return empty lines
+- Streaming requests: Continuously return SSE keep-alive comments (: keep-alive)
+
+### Sample Payload
+```
 {
   "messages": [
     {
@@ -47,3 +82,4 @@
   "logprobs": false,
   "top_logprobs": null
 }
+```

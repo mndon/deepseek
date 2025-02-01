@@ -171,11 +171,7 @@ func (c *Client) do(chatReq *request.ChatCompletionsRequest) (io.ReadCloser, err
 
 	if resp.StatusCode != 200 {
 		defer resp.Body.Close()
-		errMsg, err := io.ReadAll(resp.Body)
-		if err != nil {
-			return nil, err
-		}
-		return nil, errors.New(string(errMsg))
+		return nil, processError(resp.Body, resp.StatusCode)
 	}
 
 	return resp.Body, nil
@@ -185,4 +181,16 @@ func setDefaultHeaders(req *http.Request, apiKey string) {
 	req.Header.Add("Authorization", fmt.Sprintf(`Bearer %s`, apiKey))
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("Accept", "application/json")
+}
+
+func processError(respBody io.Reader, statusCode int) error {
+	errBody, err := io.ReadAll(respBody)
+	if err != nil {
+		return err
+	}
+	errResp, err := internal.ParseError(errBody)
+	if err != nil {
+		return fmt.Errorf("err: %s; http_status_code=%d", errBody, statusCode)
+	}
+	return fmt.Errorf("err: %s; http_status_code=%d", errResp.Error.Message, statusCode)
 }
