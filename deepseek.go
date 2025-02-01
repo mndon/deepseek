@@ -26,8 +26,9 @@ type Client interface {
 
 func NewClient(apiKey string) (Client, error) {
 	config := config.Config{
-		ApiKey:         apiKey,
-		TimeoutSeconds: DEFAULT_TIMEOUT_SECONDS,
+		ApiKey:                  apiKey,
+		TimeoutSeconds:          DEFAULT_TIMEOUT_SECONDS,
+		EnableRequestValidation: true,
 	}
 	return NewClientWithConfig(config)
 }

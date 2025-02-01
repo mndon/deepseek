@@ -15,9 +15,9 @@ import (
 	"github.com/go-deepseek/deepseek/response"
 )
 
-type Client struct {
+type Client struct { // TODO: VN -- move to internal pkg
 	*http.Client
-	apiKey string
+	config.Config
 }
 
 func NewClient(config config.Config) (*Client, error) {
@@ -29,7 +29,7 @@ func NewClient(config config.Config) (*Client, error) {
 	}
 
 	c := &Client{
-		apiKey: config.ApiKey,
+		Config: config,
 		Client: &http.Client{
 			Timeout: time.Second * time.Duration(config.TimeoutSeconds),
 		},
@@ -45,9 +45,11 @@ func (c *Client) CallChatCompletionsChat(chatReq *request.ChatCompletionsRequest
 	if chatReq.Model != "deepseek-chat" {
 		return nil, errors.New(`err: model should be "deepseek-chat"`)
 	}
-	err := request.ValidateChatCompletionsRequest(chatReq)
-	if err != nil {
-		return nil, err
+	if c.EnableRequestValidation {
+		err := request.ValidateChatCompletionsRequest(chatReq)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	// call api
@@ -74,9 +76,11 @@ func (c *Client) StreamChatCompletionsChat(chatReq *request.ChatCompletionsReque
 	if chatReq.Model != "deepseek-chat" {
 		return nil, errors.New(`err: model should be "deepseek-chat"`)
 	}
-	err := request.ValidateChatCompletionsRequest(chatReq)
-	if err != nil {
-		return nil, err
+	if c.EnableRequestValidation {
+		err := request.ValidateChatCompletionsRequest(chatReq)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	// call api
@@ -97,9 +101,11 @@ func (c *Client) CallChatCompletionsReasoner(chatReq *request.ChatCompletionsReq
 	if chatReq.Model != "deepseek-reasoner" {
 		return nil, errors.New(`err: model should be "deepseek-reasoner"`)
 	}
-	err := request.ValidateChatCompletionsRequest(chatReq)
-	if err != nil {
-		return nil, err
+	if c.EnableRequestValidation {
+		err := request.ValidateChatCompletionsRequest(chatReq)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	// call api
@@ -126,9 +132,11 @@ func (c *Client) StreamChatCompletionsReasoner(chatReq *request.ChatCompletionsR
 	if chatReq.Model != "deepseek-reasoner" {
 		return nil, errors.New(`err: model should be "deepseek-reasoner"`)
 	}
-	err := request.ValidateChatCompletionsRequest(chatReq)
-	if err != nil {
-		return nil, err
+	if c.EnableRequestValidation {
+		err := request.ValidateChatCompletionsRequest(chatReq)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	// call api
@@ -154,7 +162,7 @@ func (c *Client) do(chatReq *request.ChatCompletionsRequest) (io.ReadCloser, err
 	if err != nil {
 		return nil, err
 	}
-	setDefaultHeaders(req, c.apiKey)
+	setDefaultHeaders(req, c.ApiKey)
 
 	resp, err := c.Client.Do(req)
 	if err != nil {
