@@ -45,7 +45,7 @@ func (c *Client) CallChatCompletionsChat(chatReq *request.ChatCompletionsRequest
 	if chatReq.Model != "deepseek-chat" {
 		return nil, errors.New(`err: model should be "deepseek-chat"`)
 	}
-	if c.EnableRequestValidation {
+	if !c.DisableRequestValidation {
 		err := request.ValidateChatCompletionsRequest(chatReq)
 		if err != nil {
 			return nil, err
@@ -76,7 +76,7 @@ func (c *Client) StreamChatCompletionsChat(chatReq *request.ChatCompletionsReque
 	if chatReq.Model != "deepseek-chat" {
 		return nil, errors.New(`err: model should be "deepseek-chat"`)
 	}
-	if c.EnableRequestValidation {
+	if !c.DisableRequestValidation {
 		err := request.ValidateChatCompletionsRequest(chatReq)
 		if err != nil {
 			return nil, err
@@ -101,7 +101,7 @@ func (c *Client) CallChatCompletionsReasoner(chatReq *request.ChatCompletionsReq
 	if chatReq.Model != "deepseek-reasoner" {
 		return nil, errors.New(`err: model should be "deepseek-reasoner"`)
 	}
-	if c.EnableRequestValidation {
+	if !c.DisableRequestValidation {
 		err := request.ValidateChatCompletionsRequest(chatReq)
 		if err != nil {
 			return nil, err
@@ -132,7 +132,7 @@ func (c *Client) StreamChatCompletionsReasoner(chatReq *request.ChatCompletionsR
 	if chatReq.Model != "deepseek-reasoner" {
 		return nil, errors.New(`err: model should be "deepseek-reasoner"`)
 	}
-	if c.EnableRequestValidation {
+	if !c.DisableRequestValidation {
 		err := request.ValidateChatCompletionsRequest(chatReq)
 		if err != nil {
 			return nil, err
