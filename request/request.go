@@ -24,10 +24,10 @@ type ChatCompletionsRequest struct {
 	StreamOptions    *StreamOptions  `json:"stream_options,omitempty"`
 	Temperature      int             `json:"temperature,omitempty"`
 	TopP             *float32        `json:"top_p,omitempty"`
-	// tools // TODO: VN -- add support
-	// tool_choice // TODO: VN -- add support
-	Logprobs    bool `json:"logprobs,omitempty"`
-	TopLogprobs *int `json:"top_logprobs,omitempty"`
+	Tools            *[]Tool         `json:"tools,omitempty"`
+	ToolChoice       any             `json:"tool_choice,omitempty"`
+	Logprobs         bool            `json:"logprobs,omitempty"`
+	TopLogprobs      *int            `json:"top_logprobs,omitempty"`
 }
 
 type Message struct {
@@ -45,4 +45,49 @@ type ResponseFormat struct {
 
 type StreamOptions struct {
 	IncludeUsage bool `json:"include_usage"`
+}
+
+// "tools": [
+//
+//	{
+//	  "type": "function",
+//	  "function": {
+//	    "name": "get_weather",
+//	    "description": "Get weather of an location, the user shoud supply a location first",
+//	    "parameters": {
+//	      "type": "object",
+//	      "properties": {
+//	        "location": {
+//	          "type": "string",
+//	          "description": "The city and state, e.g. San Francisco, CA"
+//	        }
+//	      },
+//	      "required": [
+//	        "location"
+//	      ]
+//	    }
+//	  }
+//	}
+//
+// ]
+type Tool struct {
+	Type     string        `json:"type"`
+	Function *ToolFunction `json:"function"`
+}
+
+type ToolFunction struct {
+	Name        string `json:"name"`
+	Description string `json:"description,omitempty"`
+	Parameters  any    `json:"parameters"`
+}
+
+type ToolChoiceString string
+
+type ToolChoiceNamed struct {
+	Type     string             `json:"type"`
+	Function ToolChoiceFunction `json:"function"`
+}
+
+type ToolChoiceFunction struct {
+	Name string `json:"name"`
 }

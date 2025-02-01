@@ -1,2 +1,49 @@
 ** TODO
 - error-code: https://api-docs.deepseek.com/quick_start/error_codes
+
+** Sample Payload
+{
+  "messages": [
+    {
+      "content": "You are a helpful assistant",
+      "role": "system"
+    },
+    {
+      "content": "Hi",
+      "role": "user"
+    }
+  ],
+  "model": "deepseek-chat",
+  "frequency_penalty": 1.1,
+  "max_tokens": 2048,
+  "presence_penalty": 0,
+  "response_format": {
+    "type": "text"
+  },
+  "stream": false,
+  "temperature": 1,
+  "top_p": 1,
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "get_weather",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "location": {
+              "type": "string",
+              "description": "The city and state, e.g. San Francisco, CA"
+            }
+          },
+          "required": [
+            "location"
+          ]
+        }
+      }
+    }
+  ],
+  "tool_choice": {"type": "function", "function": {"name": "get_weather"}},
+  "logprobs": false,
+  "top_logprobs": null
+}
