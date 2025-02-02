@@ -1,6 +1,8 @@
 package deepseek
 
 import (
+	"context"
+
 	"github.com/go-deepseek/deepseek/client"
 	"github.com/go-deepseek/deepseek/config"
 	"github.com/go-deepseek/deepseek/request"
@@ -15,11 +17,11 @@ const (
 )
 
 type Client interface {
-	CallChatCompletionsChat(chatReq *request.ChatCompletionsRequest) (*response.ChatCompletionsResponse, error)
-	CallChatCompletionsReasoner(chatReq *request.ChatCompletionsRequest) (*response.ChatCompletionsResponse, error)
+	CallChatCompletionsChat(ctx context.Context, chatReq *request.ChatCompletionsRequest) (*response.ChatCompletionsResponse, error)
+	CallChatCompletionsReasoner(ctx context.Context, chatReq *request.ChatCompletionsRequest) (*response.ChatCompletionsResponse, error)
 
-	StreamChatCompletionsChat(chatReq *request.ChatCompletionsRequest) (response.StreamReader, error)
-	StreamChatCompletionsReasoner(chatReq *request.ChatCompletionsRequest) (response.StreamReader, error)
+	StreamChatCompletionsChat(ctx context.Context, chatReq *request.ChatCompletionsRequest) (response.StreamReader, error)
+	StreamChatCompletionsReasoner(ctx context.Context, chatReq *request.ChatCompletionsRequest) (response.StreamReader, error)
 
 	// PingChatCompletionsChat() (*DeepseekChatResponse, error) // TODO: VN -- impl
 }

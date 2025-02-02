@@ -2,6 +2,7 @@ package client
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -37,13 +38,13 @@ func NewClient(config config.Config) (*Client, error) {
 	return c, nil
 }
 
-func (c *Client) CallChatCompletionsChat(chatReq *request.ChatCompletionsRequest) (*response.ChatCompletionsResponse, error) {
+func (c *Client) CallChatCompletionsChat(ctx context.Context, chatReq *request.ChatCompletionsRequest) (*response.ChatCompletionsResponse, error) {
 	// validate request
-	if chatReq.Stream {
-		return nil, errors.New(`err: stream should be "false"`)
+	if ctx == nil {
+		ctx = context.Background()
 	}
-	if chatReq.Model != "deepseek-chat" {
-		return nil, errors.New(`err: model should be "deepseek-chat"`)
+	if err := validateChatParams(chatReq, false, "deepseek-chat"); err != nil {
+		return nil, err
 	}
 	if !c.DisableRequestValidation {
 		err := request.ValidateChatCompletionsRequest(chatReq)
@@ -53,7 +54,7 @@ func (c *Client) CallChatCompletionsChat(chatReq *request.ChatCompletionsRequest
 	}
 
 	// call api
-	respBody, err := c.do(chatReq)
+	respBody, err := c.do(ctx, chatReq)
 	if err != nil {
 		return nil, err
 	}
@@ -68,13 +69,13 @@ func (c *Client) CallChatCompletionsChat(chatReq *request.ChatCompletionsRequest
 	return chatResp, err
 }
 
-func (c *Client) StreamChatCompletionsChat(chatReq *request.ChatCompletionsRequest) (response.StreamReader, error) {
+func (c *Client) StreamChatCompletionsChat(ctx context.Context, chatReq *request.ChatCompletionsRequest) (response.StreamReader, error) {
 	// validate request
-	if !chatReq.Stream {
-		return nil, errors.New(`err: stream should be "true"`)
+	if ctx == nil {
+		ctx = context.Background()
 	}
-	if chatReq.Model != "deepseek-chat" {
-		return nil, errors.New(`err: model should be "deepseek-chat"`)
+	if err := validateChatParams(chatReq, true, "deepseek-chat"); err != nil {
+		return nil, err
 	}
 	if !c.DisableRequestValidation {
 		err := request.ValidateChatCompletionsRequest(chatReq)
@@ -84,7 +85,7 @@ func (c *Client) StreamChatCompletionsChat(chatReq *request.ChatCompletionsReque
 	}
 
 	// call api
-	respBody, err := c.do(chatReq)
+	respBody, err := c.do(ctx, chatReq)
 	if err != nil {
 		return nil, err
 	}
@@ -93,13 +94,13 @@ func (c *Client) StreamChatCompletionsChat(chatReq *request.ChatCompletionsReque
 	return sr, nil
 }
 
-func (c *Client) CallChatCompletionsReasoner(chatReq *request.ChatCompletionsRequest) (*response.ChatCompletionsResponse, error) {
+func (c *Client) CallChatCompletionsReasoner(ctx context.Context, chatReq *request.ChatCompletionsRequest) (*response.ChatCompletionsResponse, error) {
 	// validate request
-	if chatReq.Stream {
-		return nil, errors.New(`err: stream should be "false"`)
+	if ctx == nil {
+		ctx = context.Background()
 	}
-	if chatReq.Model != "deepseek-reasoner" {
-		return nil, errors.New(`err: model should be "deepseek-reasoner"`)
+	if err := validateChatParams(chatReq, false, "deepseek-reasoner"); err != nil {
+		return nil, err
 	}
 	if !c.DisableRequestValidation {
 		err := request.ValidateChatCompletionsRequest(chatReq)
@@ -109,7 +110,7 @@ func (c *Client) CallChatCompletionsReasoner(chatReq *request.ChatCompletionsReq
 	}
 
 	// call api
-	respBody, err := c.do(chatReq)
+	respBody, err := c.do(ctx, chatReq)
 	if err != nil {
 		return nil, err
 	}
@@ -124,13 +125,13 @@ func (c *Client) CallChatCompletionsReasoner(chatReq *request.ChatCompletionsReq
 	return chatResp, err
 }
 
-func (c *Client) StreamChatCompletionsReasoner(chatReq *request.ChatCompletionsRequest) (response.StreamReader, error) {
+func (c *Client) StreamChatCompletionsReasoner(ctx context.Context, chatReq *request.ChatCompletionsRequest) (response.StreamReader, error) {
 	// validate request
-	if !chatReq.Stream {
-		return nil, errors.New(`err: stream should be "true"`)
+	if ctx == nil {
+		ctx = context.Background()
 	}
-	if chatReq.Model != "deepseek-reasoner" {
-		return nil, errors.New(`err: model should be "deepseek-reasoner"`)
+	if err := validateChatParams(chatReq, true, "deepseek-reasoner"); err != nil {
+		return nil, err
 	}
 	if !c.DisableRequestValidation {
 		err := request.ValidateChatCompletionsRequest(chatReq)
@@ -140,7 +141,7 @@ func (c *Client) StreamChatCompletionsReasoner(chatReq *request.ChatCompletionsR
 	}
 
 	// call api
-	respBody, err := c.do(chatReq)
+	respBody, err := c.do(ctx, chatReq)
 	if err != nil {
 		return nil, err
 	}
@@ -149,7 +150,7 @@ func (c *Client) StreamChatCompletionsReasoner(chatReq *request.ChatCompletionsR
 	return sr, nil
 }
 
-func (c *Client) do(chatReq *request.ChatCompletionsRequest) (io.ReadCloser, error) {
+func (c *Client) do(ctx context.Context, chatReq *request.ChatCompletionsRequest) (io.ReadCloser, error) {
 	url := fmt.Sprintf(`%s/chat/completions`, internal.BASE_URL)
 
 	in := new(bytes.Buffer)
@@ -158,7 +159,7 @@ func (c *Client) do(chatReq *request.ChatCompletionsRequest) (io.ReadCloser, err
 		return nil, err
 	}
 
-	req, err := http.NewRequest(http.MethodPost, url, in)
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, url, in)
 	if err != nil {
 		return nil, err
 	}
@@ -193,4 +194,17 @@ func processError(respBody io.Reader, statusCode int) error {
 		return fmt.Errorf("err: %s; http_status_code=%d", errBody, statusCode)
 	}
 	return fmt.Errorf("err: %s; http_status_code=%d", errResp.Error.Message, statusCode)
+}
+
+func validateChatParams(chatReq *request.ChatCompletionsRequest, wantStream bool, wantModel string) error {
+	if chatReq == nil {
+		return errors.New("err: chat completions request should not be nil")
+	}
+	if chatReq.Stream != wantStream {
+		return fmt.Errorf(`err: stream should be %v`, wantStream)
+	}
+	if chatReq.Model != wantModel {
+		return fmt.Errorf(`err: model should be %q`, wantModel)
+	}
+	return nil
 }

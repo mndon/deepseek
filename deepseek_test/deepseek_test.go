@@ -1,6 +1,7 @@
 package deepseek_test
 
 import (
+	"context"
 	"embed"
 	"encoding/json"
 	"fmt"
@@ -42,7 +43,9 @@ func TestCallChat(t *testing.T) {
 	err = json.Unmarshal(reqJson, req)
 	require.NoError(t, err)
 
-	resp, err := client.CallChatCompletionsChat(req) // test
+	ctx := context.Background()
+	// ctx, _ = context.WithTimeout(ctx, time.Second*2)
+	resp, err := client.CallChatCompletionsChat(ctx, req) // test
 
 	require.NoError(t, err)
 	assert.NotEmpty(t, resp.Id)
@@ -61,7 +64,7 @@ func TestStreamChat(t *testing.T) {
 	err = json.Unmarshal(reqJson, req)
 	require.NoError(t, err)
 
-	iter, err := client.StreamChatCompletionsChat(req) // test
+	iter, err := client.StreamChatCompletionsChat(context.Background(), req) // test
 
 	require.NoError(t, err)
 	assert.NotNil(t, iter)
@@ -93,7 +96,7 @@ func TestCallReasoner(t *testing.T) {
 	err = json.Unmarshal(reqJson, req)
 	require.NoError(t, err)
 
-	resp, err := client.CallChatCompletionsReasoner(req) // test
+	resp, err := client.CallChatCompletionsReasoner(context.Background(), req) // test
 
 	require.NoError(t, err)
 	assert.NotEmpty(t, resp.Id)
@@ -116,7 +119,7 @@ func TestStreamReasoner(t *testing.T) {
 	err = json.Unmarshal(reqJson, req)
 	require.NoError(t, err)
 
-	iter, err := client.StreamChatCompletionsReasoner(req) // test
+	iter, err := client.StreamChatCompletionsReasoner(context.Background(), req) // test
 
 	require.NoError(t, err)
 	assert.NotNil(t, iter)
