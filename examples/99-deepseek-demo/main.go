@@ -12,18 +12,9 @@ import (
 	"github.com/go-deepseek/deepseek/request"
 )
 
-var apiKey = "your_deepseek_api_key"
-
 func main() {
-	if apiKeyEnv := os.Getenv("DEEPSEEK_API_KEY"); apiKeyEnv != "" {
-		apiKey = apiKeyEnv
-	}
-
 	// create deepseek api client
-	cli, err := deepseek.NewClient(apiKey)
-	if err != nil {
-		panic(err)
-	}
+	cli, _ := deepseek.NewClient(os.Getenv("DEEPSEEK_API_KEY"))
 
 	fmt.Println("This is deepseek demo; type `bye` to exit")
 	for {
@@ -54,7 +45,8 @@ func main() {
 		// call deepseek api
 		sr, err := cli.StreamChatCompletionsReasoner(context.Background(), chatReq)
 		if err != nil {
-			panic(err)
+			fmt.Println("error => ", err)
+			return
 		}
 
 		for {
@@ -63,7 +55,8 @@ func main() {
 				if err == io.EOF {
 					break
 				}
-				panic(err)
+				fmt.Println("error => ", err)
+				return
 			}
 			if chatResp.Choices[0].Delta.ReasoningContent != "" {
 				fmt.Print(chatResp.Choices[0].Delta.ReasoningContent)

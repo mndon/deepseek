@@ -4,20 +4,15 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/go-deepseek/deepseek"
-	"github.com/go-deepseek/deepseek/config"
 	"github.com/go-deepseek/deepseek/request"
 )
 
 func main() {
-	// create deepseek api client with custom config
-	cfg := config.Config{
-		ApiKey:                   os.Getenv("DEEPSEEK_API_KEY"),
-		TimeoutSeconds:           60,
-		DisableRequestValidation: true,
-	}
-	cli, _ := deepseek.NewClientWithConfig(cfg)
+	// create deepseek api client
+	cli, _ := deepseek.NewClient(os.Getenv("DEEPSEEK_API_KEY"))
 
 	inputMessage := "Hello Deepseek!" // set your input message
 	chatReq := &request.ChatCompletionsRequest{
@@ -33,7 +28,8 @@ func main() {
 	fmt.Printf("input message => %s\n", chatReq.Messages[0].Content)
 
 	// call deepseek api
-	chatResp, err := cli.CallChatCompletionsChat(context.Background(), chatReq)
+	ctx, _ := context.WithTimeout(context.Background(), time.Second*2) // wait for 2 seconds to get response
+	chatResp, err := cli.CallChatCompletionsChat(ctx, chatReq)
 	if err != nil {
 		fmt.Println("error => ", err)
 		return

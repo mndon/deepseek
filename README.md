@@ -8,11 +8,11 @@ We needed to call the DeepSeek API from one of our Go services but couldn't find
 
 Because this Go client is not only complete and reliable but also simple and performant.
 
-- **Complete** – It offers full support for all APIs, including their complete request and response payloads. (Note: Beta version coming soon.)
+- **Complete** – It offers full support for all APIs, including their complete request and response payloads. (Note: Beta feature support coming soon.)
 
-- **Reliable** – We have implemented numerous Go tests to ensure that all features function correctly at all times.
+- **Reliable** – We have implemented numerous Go tests to ensure that all features work correctly at all times.
 
-- **Simple** – The client is organized into multiple Go packages, making it easy to navigate and ensuring that each package contains only relevant and necessary features.
+- **Simple** – The client is organized into multiple Go packages to ensure that each package contains only relevant and necessary features, making it easy to use.
 
 - **Performant** – Speed is crucial when working with AI models. We have optimized this client to deliver the fastest possible performance.
 
