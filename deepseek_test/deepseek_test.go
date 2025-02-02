@@ -23,11 +23,20 @@ const DEEPSEEK_API_KEY = `sk-123cd456c78d9be0b123de45cf6789b0` // replace with v
 var testdata embed.FS
 
 func GetApiKey() string {
-	apiKey := os.Getenv("DEEPSEEK_API_KEY")
-	if apiKey != "" {
+	if apiKey := os.Getenv("DEEPSEEK_API_KEY"); apiKey != "" {
 		return apiKey
 	}
 	return DEEPSEEK_API_KEY
+}
+
+func PingChatCompletions(t *testing.T) {
+	client, err := deepseek.NewClient(GetApiKey())
+	require.NoError(t, err)
+
+	output, err := client.PingChatCompletions(context.Background(), "Hello")
+
+	assert.NoError(t, err)
+	assert.NotEmpty(t, output)
 }
 
 func TestCallChat(t *testing.T) {

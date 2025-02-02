@@ -23,7 +23,7 @@ type Client interface {
 	StreamChatCompletionsChat(ctx context.Context, chatReq *request.ChatCompletionsRequest) (response.StreamReader, error)
 	StreamChatCompletionsReasoner(ctx context.Context, chatReq *request.ChatCompletionsRequest) (response.StreamReader, error)
 
-	// PingChatCompletionsChat() (*DeepseekChatResponse, error) // TODO: VN -- impl
+	PingChatCompletions(ctx context.Context, inputMessage string) (outputMessge string, err error)
 }
 
 func NewClient(apiKey string) (Client, error) {

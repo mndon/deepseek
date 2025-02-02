@@ -150,6 +150,30 @@ func (c *Client) StreamChatCompletionsReasoner(ctx context.Context, chatReq *req
 	return sr, nil
 }
 
+func (c *Client) PingChatCompletions(ctx context.Context, inputMessage string) (outputMessge string, err error) {
+	chatReq := &request.ChatCompletionsRequest{
+		Model:  "deepseek-chat",
+		Stream: false,
+		Messages: []*request.Message{
+			{
+				Role:    "user",
+				Content: inputMessage,
+			},
+		},
+	}
+	chatResp, err := c.CallChatCompletionsChat(context.Background(), chatReq)
+	if err != nil {
+		return "", err
+	}
+
+	if chatResp != nil && len(chatResp.Choices) > 0 && chatResp.Choices[0].Message != nil {
+		outputMessge = chatResp.Choices[0].Message.Content
+	} else {
+		return "", errors.New("err: invalid response")
+	}
+	return outputMessge, nil
+}
+
 func (c *Client) do(ctx context.Context, chatReq *request.ChatCompletionsRequest) (io.ReadCloser, error) {
 	url := fmt.Sprintf(`%s/chat/completions`, internal.BASE_URL)
 
