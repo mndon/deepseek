@@ -21,6 +21,14 @@ Because this Go client is not only complete and reliable but also simple and per
 go get github.com/go-deepseek/deepseek
 ```
 
+## Demo
+
+Left side -- https://chat.deepseek.com/
+
+Right side -- [deepseek-demo](https://github.com/go-deepseek/deepseek-demo)
+
+https://github.com/user-attachments/assets/3bdcee68-dbd0-493e-9832-2a01e2e7be9c
+
 ## Usage
 
 Here’s an example of sending a "Hello Deepseek!" message using `model=deepseek-chat` and `stream=false`
