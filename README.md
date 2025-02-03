@@ -27,7 +27,7 @@ Left side -- https://chat.deepseek.com/
 
 Right side -- [deepseek-demo](https://github.com/go-deepseek/deepseek-demo)
 
-https://github.com/user-attachments/assets/3bdcee68-dbd0-493e-9832-2a01e2e7be9c
+https://github.com/user-attachments/assets/baa05145-a13c-460d-91ce-90129c5b32d7
 
 ## Usage
 
