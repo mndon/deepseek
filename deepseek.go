@@ -9,7 +9,7 @@ import (
 	"github.com/go-deepseek/deepseek/response"
 )
 
-const DEFAULT_TIMEOUT_SECONDS = 60
+const DEFAULT_TIMEOUT_SECONDS = 120
 
 const (
 	DEEPSEEK_CHAT_MODEL     = "deepseek-chat"
@@ -37,16 +37,23 @@ type Client interface {
 	PingChatCompletions(ctx context.Context, inputMessage string) (outputMessge string, err error)
 }
 
-// NewClient creates deeseek client with given api key.
+// NewClient returns deeseek client which uses given deepseek API key.
 func NewClient(apiKey string) (Client, error) {
-	config := config.Config{
-		ApiKey:         apiKey,
-		TimeoutSeconds: DEFAULT_TIMEOUT_SECONDS,
-	}
+	config := NewConfigWithDefaults()
+	config.ApiKey = apiKey
 	return NewClientWithConfig(config)
 }
 
-// NewClient creates deeseek client with given client config.
+// NewClient returns deeseek client with given client config.
 func NewClientWithConfig(config config.Config) (Client, error) {
 	return client.NewClient(config)
+}
+
+// NewConfigWithDefaults returns client config with default values.
+func NewConfigWithDefaults() config.Config {
+	config := config.Config{
+		TimeoutSeconds:           DEFAULT_TIMEOUT_SECONDS,
+		DisableRequestValidation: false,
+	}
+	return config
 }

@@ -29,7 +29,7 @@ func GetApiKey() string {
 	return DEEPSEEK_API_KEY
 }
 
-func PingChatCompletions(t *testing.T) {
+func TestPingChatCompletions(t *testing.T) {
 	client, err := deepseek.NewClient(GetApiKey())
 	require.NoError(t, err)
 
