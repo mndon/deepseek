@@ -1,5 +1,12 @@
 # Go-Deepseek -- Go Client for [Deepseek API](https://api-docs.deepseek.com/)
 
+> [!IMPORTANT]  
+> We know that sometimes **Deepseek API is down** but we won't let you down.
+>
+> We have **`FakeCallbackClient`** using which you can continue your development and testing even though Deepseek API is down.
+>
+> Use `fake.NewFakeCallbackClient(fake.Callbacks{})` / See example [`examples/81-fake-callback-client/main_test.go`](examples/81-fake-callback-client/main_test.go)
+
 ## Demo
 
 **30 seconds demo:** left-side browser with **[chat.deepseek.com](https://chat.deepseek.com/)** v/s **[go-deepseek](https://github.com/go-deepseek/deepseek)** in right-side terminal.
