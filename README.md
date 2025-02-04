@@ -79,7 +79,7 @@ output => Hello! How can I assist you today? 😊
 
 Please check the [examples](examples/) directory, which showcases each feature of this client.
 
-![examples](docs/examples_directory.png)
+![examples](https://github.com/user-attachments/assets/032ff864-7da5-4b76-9484-836b52046614)
 
 ## Buy me a GitHub Star ⭐
 
