@@ -15,15 +15,17 @@ https://github.com/user-attachments/assets/baa05145-a13c-460d-91ce-90129c5b32d7
 
 ## Why yet another Go client?
 
-We needed to call the DeepSeek API from one of our Go services but couldn't find a complete and reliable Go client, so we built our own.
+We were looking for `Dedicated` & `Simple` Go Client for Deepseek API but we didn't find it so we build this one 😃
 
 ## What's special about this Go client?
+
+- **Simple** – Below is the Go package structure with all exported entities. It is as simple as possible. Also, it's Go's idiomatic way - request is under request pkg, response is under response.
+
+![go_pkg_structure](https://github.com/user-attachments/assets/729a2294-98fa-4f6e-b936-ae5eb1b624ff)
 
 - **Complete** – It offers full support for all APIs, including their complete request and response payloads. (Note: Beta feature support coming soon.)
 
 - **Reliable** – We have implemented numerous Go tests to ensure that all features work correctly at all times.
-
-- **Simple** – The client is organized into multiple Go packages to ensure that each package contains only relevant and necessary features, making it easy to use.
 
 - **Performant** – Speed is crucial when working with AI models. We have optimized this client to deliver the fastest possible performance.
 
