@@ -17,7 +17,7 @@ https://github.com/user-attachments/assets/baa05145-a13c-460d-91ce-90129c5b32d7
 
 We needed to call the DeepSeek API from one of our Go services but couldn't find a complete and reliable Go client, so we built our own.
 
-## Why this Go client is better?
+## What's special about this Go client?
 
 - **Complete** – It offers full support for all APIs, including their complete request and response payloads. (Note: Beta feature support coming soon.)
 
