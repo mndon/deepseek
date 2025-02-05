@@ -84,7 +84,7 @@ func TestStreamChat(t *testing.T) {
 			if err == io.EOF {
 				break
 			}
-			panic(err)
+			t.Fatal(err)
 		}
 		assert.NotNil(t, resp)
 		assert.NotEmpty(t, resp.Id)
@@ -93,7 +93,7 @@ func TestStreamChat(t *testing.T) {
 }
 
 func TestCallReasoner(t *testing.T) {
-	// ts := NewFakeServer("testdata/01_resp_basic_chat.json")
+	// ts := NewFakeServer("testdata/03_resp_basic_reasoner.json")
 	// defer ts.Close()
 
 	client, err := deepseek.NewClient(GetApiKey())
@@ -139,7 +139,7 @@ func TestStreamReasoner(t *testing.T) {
 			if err == io.EOF {
 				break
 			}
-			panic(err)
+			t.Fatal(err)
 		}
 		assert.NotNil(t, resp)
 		assert.NotEmpty(t, resp.Id)

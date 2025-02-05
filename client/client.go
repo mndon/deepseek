@@ -60,12 +60,17 @@ func (c *Client) CallChatCompletionsChat(ctx context.Context, chatReq *request.C
 	}
 	defer respBody.Close()
 
-	chatResp := &response.ChatCompletionsResponse{}
-	err = json.NewDecoder(respBody).Decode(chatResp)
+	body, err := io.ReadAll(respBody)
 	if err != nil {
 		return nil, err
 	}
 
+	if len(body) == 0 {
+		return nil, errors.New("err: service unavailable")
+	}
+
+	chatResp := &response.ChatCompletionsResponse{}
+	err = json.Unmarshal(body, chatResp)
 	return chatResp, err
 }
 
@@ -116,12 +121,17 @@ func (c *Client) CallChatCompletionsReasoner(ctx context.Context, chatReq *reque
 	}
 	defer respBody.Close()
 
-	chatResp := &response.ChatCompletionsResponse{}
-	err = json.NewDecoder(respBody).Decode(chatResp)
+	body, err := io.ReadAll(respBody)
 	if err != nil {
 		return nil, err
 	}
 
+	if len(body) == 0 {
+		return nil, errors.New("err: service unavailable")
+	}
+
+	chatResp := &response.ChatCompletionsResponse{}
+	err = json.Unmarshal(body, chatResp)
 	return chatResp, err
 }
 

@@ -3,8 +3,13 @@ package response
 import (
 	"bufio"
 	"encoding/json"
+	"errors"
 	"io"
 )
+
+const KEEP_ALIVE = `: keep-alive`
+
+const KEEP_ALIVE_LEN = len(KEEP_ALIVE)
 
 type StreamReader interface {
 	Read() (*ChatCompletionsResponse, error)
@@ -45,19 +50,38 @@ func (m *streamReader) process(stream io.ReadCloser) {
 		if len(bytes) <= 1 {
 			continue
 		}
-		bytes = trimDataPrefix(bytes)
-		if len(bytes) > 1 && bytes[0] == '[' {
-			str := string(bytes)
-			if str == "[DONE]" {
-				m.respCh <- &streamResponse{nil, io.EOF} // io.EOF to indicate end
-				close(m.respCh)
-				return
-			}
+		chatResp, err := processResponse(bytes)
+		if err != nil {
+			m.respCh <- &streamResponse{nil, err}
+			close(m.respCh)
+			return
 		}
-		chatResp := &ChatCompletionsResponse{}
-		err = json.Unmarshal(bytes, chatResp)
 		m.respCh <- &streamResponse{chatResp, err}
 	}
+}
+
+func processResponse(bytes []byte) (*ChatCompletionsResponse, error) {
+	// handle keep-alive response
+	if len(bytes) == KEEP_ALIVE_LEN {
+		if string(bytes) == KEEP_ALIVE {
+			err := errors.New("err: service unavailable")
+			return nil, err
+		}
+	}
+
+	// handle response end
+	bytes = trimDataPrefix(bytes)
+	if len(bytes) > 1 && bytes[0] == '[' {
+		str := string(bytes)
+		if str == "[DONE]" {
+			return nil, io.EOF // io.EOF to indicate end
+		}
+	}
+
+	// parse response
+	chatResp := &ChatCompletionsResponse{}
+	err := json.Unmarshal(bytes, chatResp)
+	return chatResp, err
 }
 
 func trimDataPrefix(content []byte) []byte {
