@@ -1,4 +1,6 @@
-# Go-Deepseek -- Go Client for [Deepseek API](https://api-docs.deepseek.com/)
+# Go-Deepseek
+
+Go-deepseek is a Go client for the [DeepSeek API](https://api-docs.deepseek.com/); supporting DeepSeek-V3, DeepSeek-R1, and more, with both streaming and non-streaming options. This **production-ready** client is actively maintained, with ongoing bug fixes and feature enhancements. 
 
 ![go-deepseek-design](https://github.com/user-attachments/assets/346806ad-7617-4690-b6b4-0b49707852d8)
 
@@ -68,7 +70,7 @@ output => Hello! How can I assist you today? 😊
 ```
 ## Why yet another Go client?
 
-We were looking for `Dedicated` & `Simple` Go Client for Deepseek API but we didn't find it so we build this one 😃
+We were looking for `Dedicated` & `Simple` Go Client for Deepseek API but we didn't find it so we built this one 😃
 
 ## What's special about this Go client?
 
