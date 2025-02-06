@@ -1,12 +1,5 @@
 # Go-Deepseek -- Go Client for [Deepseek API](https://api-docs.deepseek.com/)
 
-> [!IMPORTANT]  
-> We know that sometimes **Deepseek API is down** but we won't let you down.
->
-> We have **`Fake Client`** using which you can continue your development and testing even though Deepseek API is down.
->
-> Use `fake.NewFakeCallbackClient(fake.Callbacks{})` / See example [`examples/81-fake-callback-client/main_test.go`](examples/81-fake-callback-client/main_test.go)
-
 ## Demo
 
 **30 seconds deepseek-demo ([code](https://github.com/go-deepseek/deepseek-demo/)):** left-side browser with **[chat.deepseek.com](https://chat.deepseek.com/)** **v/s** **[go-deepseek](https://github.com/go-deepseek/deepseek)** in right-side terminal.
@@ -28,6 +21,13 @@ We were looking for `Dedicated` & `Simple` Go Client for Deepseek API but we did
 - **Reliable** – We have implemented numerous Go tests to ensure that all features work correctly at all times.
 
 - **Performant** – Speed is crucial when working with AI models. We have optimized this client to deliver the fastest possible performance.
+
+> [!IMPORTANT]  
+> We know that sometimes **Deepseek API is down** but we won't let you down.
+>
+> We have **`Fake Client`** using which you can continue your development and testing even though Deepseek API is down.
+>
+> Use `fake.NewFakeCallbackClient(fake.Callbacks{})` / See example [`examples/81-fake-callback-client/main_test.go`](examples/81-fake-callback-client/main_test.go)
 
 ## Install
 ```
