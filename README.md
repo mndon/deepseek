@@ -1,5 +1,7 @@
 # Go-Deepseek -- Go Client for [Deepseek API](https://api-docs.deepseek.com/)
 
+![go-deepseek-design](https://github.com/user-attachments/assets/346806ad-7617-4690-b6b4-0b49707852d8)
+
 ## Demo
 
 **30 seconds deepseek-demo ([code](https://github.com/go-deepseek/deepseek-demo/)):** left-side browser with **[chat.deepseek.com](https://chat.deepseek.com/)** **v/s** **[go-deepseek](https://github.com/go-deepseek/deepseek)** in right-side terminal.
@@ -35,6 +37,8 @@ go get github.com/go-deepseek/deepseek
 ```
 
 ## Usage
+
+![go-deepseek-flow](https://github.com/user-attachments/assets/dfa6fc98-65f2-4a08-ab13-8c0732ac8302)
 
 Here’s an example of sending a "Hello Deepseek!" message using `model=deepseek-chat` (**DeepSeek-V3 model**) and `stream=false`
 
@@ -83,7 +87,6 @@ $ go get github.com/go-deepseek/deepseek
 $ go run main.go
 output => Hello! How can I assist you today? 😊
 ```
-
 ## Examples
 
 Please check the [examples](examples/) directory, which showcases each feature of this client.
