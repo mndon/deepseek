@@ -4,32 +4,11 @@
 
 ## Demo
 
-**30 seconds deepseek-demo ([code](https://github.com/go-deepseek/deepseek-demo/)):** left-side browser with **[chat.deepseek.com](https://chat.deepseek.com/)** **v/s** **[go-deepseek](https://github.com/go-deepseek/deepseek)** in right-side terminal.
+**30 seconds deepseek-demo ([code](https://github.com/go-deepseek/deepseek-demo/)):** 
+
+left-side browser with **[chat.deepseek.com](https://chat.deepseek.com/)** **v/s** **[go-deepseek](https://github.com/go-deepseek/deepseek)** in right-side terminal.
 
 https://github.com/user-attachments/assets/baa05145-a13c-460d-91ce-90129c5b32d7
-
-## Why yet another Go client?
-
-We were looking for `Dedicated` & `Simple` Go Client for Deepseek API but we didn't find it so we build this one 😃
-
-## What's special about this Go client?
-
-- **Simple** – Below is the Go package structure with all exported entities. It is as simple as possible. Also, it's Go's idiomatic way - request is under request pkg, response is under response.
-
-![go_pkg_structure](https://github.com/user-attachments/assets/729a2294-98fa-4f6e-b936-ae5eb1b624ff)
-
-- **Complete** – It offers full support for all APIs, including their complete request and response payloads. (Note: Beta feature support coming soon.)
-
-- **Reliable** – We have implemented numerous Go tests to ensure that all features work correctly at all times.
-
-- **Performant** – Speed is crucial when working with AI models. We have optimized this client to deliver the fastest possible performance.
-
-> [!IMPORTANT]  
-> We know that sometimes **Deepseek API is down** but we won't let you down.
->
-> We have **`Fake Client`** using which you can continue your development and testing even though Deepseek API is down.
->
-> Use `fake.NewFakeCallbackClient(fake.Callbacks{})` / See example [`examples/81-fake-callback-client/main_test.go`](examples/81-fake-callback-client/main_test.go)
 
 ## Install
 ```
@@ -87,6 +66,29 @@ $ go get github.com/go-deepseek/deepseek
 $ go run main.go
 output => Hello! How can I assist you today? 😊
 ```
+## Why yet another Go client?
+
+We were looking for `Dedicated` & `Simple` Go Client for Deepseek API but we didn't find it so we build this one 😃
+
+## What's special about this Go client?
+
+- **Simple** – Below is the Go package structure with all exported entities. It is as simple as possible. Also, it's Go's idiomatic way - request is under request pkg, response is under response.
+
+![go_pkg_structure](https://github.com/user-attachments/assets/729a2294-98fa-4f6e-b936-ae5eb1b624ff)
+
+- **Complete** – It offers full support for all APIs, including their complete request and response payloads. (Note: Beta feature support coming soon.)
+
+- **Reliable** – We have implemented numerous Go tests to ensure that all features work correctly at all times.
+
+- **Performant** – Speed is crucial when working with AI models. We have optimized this client to deliver the fastest possible performance.
+
+> [!IMPORTANT]  
+> We know that sometimes **Deepseek API is down** but we won't let you down.
+>
+> We have **`Fake Client`** using which you can continue your development and testing even though Deepseek API is down.
+>
+> Use `fake.NewFakeCallbackClient(fake.Callbacks{})` / See example [`examples/81-fake-callback-client/main_test.go`](examples/81-fake-callback-client/main_test.go)
+
 ## Examples
 
 Please check the [examples](examples/) directory, which showcases each feature of this client.
