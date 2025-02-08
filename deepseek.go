@@ -16,6 +16,7 @@ const (
 	DEEPSEEK_REASONER_MODEL = "deepseek-reasoner"
 )
 
+// Client interface defines methods for interacting with the DeepSeek API.
 type Client interface {
 	// CallChatCompletionsChat calls chat api with model=deepseek-chat and stream=false.
 	// It returns response from DeepSeek-V3 model.
@@ -29,7 +30,7 @@ type Client interface {
 	// It returns response from DeepSeek-V3 model.
 	StreamChatCompletionsChat(ctx context.Context, chatReq *request.ChatCompletionsRequest) (response.StreamReader, error)
 
-	// StreamChatCompletionsChat calls chat api with model=deepseek-reasoner and stream=true.
+	// StreamChatCompletionsReasoner calls chat api with model=deepseek-reasoner and stream=true.
 	// It returns response from DeepSeek-R1 model.
 	StreamChatCompletionsReasoner(ctx context.Context, chatReq *request.ChatCompletionsRequest) (response.StreamReader, error)
 
@@ -44,7 +45,7 @@ func NewClient(apiKey string) (Client, error) {
 	return NewClientWithConfig(config)
 }
 
-// NewClient returns deeseek client with given client config.
+// NewClientWithConfig returns deeseek client with given client config.
 func NewClientWithConfig(config config.Config) (Client, error) {
 	return client.NewClient(config)
 }
