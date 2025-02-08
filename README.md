@@ -74,11 +74,11 @@ We were looking for `Dedicated` & `Simple` Go Client for Deepseek API but we did
 
 ## What's special about this Go client?
 
-- **Simple** – Below is the Go package structure with all exported entities. It is as simple as possible. Also, it's Go's idiomatic way - request is under request pkg, response is under response.
+- **Simple** – Check below, Go package structure with all exported entities. It is as simple as possible. Also, it's Go's idiomatic way - request is under request pkg, response is under response.
+
+- **Complete** – Check below, It offers full support for all APIs, including their complete request and response payloads. (Note: Beta feature support coming soon.)
 
 ![go_pkg_structure](https://github.com/user-attachments/assets/729a2294-98fa-4f6e-b936-ae5eb1b624ff)
-
-- **Complete** – It offers full support for all APIs, including their complete request and response payloads. (Note: Beta feature support coming soon.)
 
 - **Reliable** – We have implemented numerous Go tests to ensure that all features work correctly at all times.
 
