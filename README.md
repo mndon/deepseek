@@ -23,7 +23,7 @@ go get github.com/go-deepseek/deepseek
 
 Here’s an example of sending a "Hello Deepseek!" message using `model=deepseek-chat` (**DeepSeek-V3 model**) and `stream=false`
 
-```
+```go
 package main
 
 import (
