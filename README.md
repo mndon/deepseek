@@ -1,12 +1,5 @@
 # Go-Deepseek
 
-> [!IMPORTANT]  
-> Our whole project / repo got copied and redistributed by someone who seems not interested or serious about our work on Go client for Deepseek API.
->
-> So we decided to change licence of our project from MIT to GPL3.
->
-> This github repo is orignal work, you can see commit history. Copied one is -- https://github.com/fumblingdun/deepseek
-
 Go-deepseek is a Go client for the [DeepSeek API](https://api-docs.deepseek.com/); supporting DeepSeek-V3, DeepSeek-R1, and more, with both streaming and non-streaming options. This **production-ready** client is actively maintained, with ongoing bug fixes and feature enhancements. 
 
 ![go-deepseek-design](https://github.com/user-attachments/assets/346806ad-7617-4690-b6b4-0b49707852d8)
