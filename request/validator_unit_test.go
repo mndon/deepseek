@@ -178,3 +178,51 @@ func TestValidateStreamOptions(t *testing.T) {
 		assert.NoError(t, err)
 	})
 }
+
+func TestValidateMultipleFields(t *testing.T) {
+	t.Run("no err for valid temprature", func(t *testing.T) {
+		req := &ChatCompletionsRequest{
+			Temperature: nil,
+		}
+		err := validateMultipleFields(req)
+		assert.NoError(t, err)
+
+		req = &ChatCompletionsRequest{
+			Temperature: ToPtr(float32(0)),
+		}
+		err = validateMultipleFields(req)
+		assert.NoError(t, err)
+
+		req = &ChatCompletionsRequest{
+			Temperature: ToPtr(float32(0.1)),
+		}
+		err = validateMultipleFields(req)
+		assert.NoError(t, err)
+
+		req = &ChatCompletionsRequest{
+			Temperature: ToPtr(float32(1.9)),
+		}
+		err = validateMultipleFields(req)
+		assert.NoError(t, err)
+
+		req = &ChatCompletionsRequest{
+			Temperature: ToPtr(float32(2.0)),
+		}
+		err = validateMultipleFields(req)
+		assert.NoError(t, err)
+	})
+
+	t.Run("err for invalid temprature", func(t *testing.T) {
+		req := &ChatCompletionsRequest{
+			Temperature: ToPtr(float32(-0.1)),
+		}
+		err := validateMultipleFields(req)
+		assert.Error(t, err)
+
+		req = &ChatCompletionsRequest{
+			Temperature: ToPtr(float32(2.1)),
+		}
+		err = validateMultipleFields(req)
+		assert.Error(t, err)
+	})
+}
