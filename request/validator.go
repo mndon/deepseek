@@ -87,13 +87,14 @@ func validateMessages(messages []*Message) error {
 	return nil
 }
 
+// 忽略模型校验，支持第三方DeepSeek
 func validateModel(req *ChatCompletionsRequest) error {
-	if req.Model == "" {
-		return errors.New("err: model required in request")
-	}
-	if !(req.Model == modelChat || req.Model == modelReasoner) {
-		return fmt.Errorf("err: invalid model %q; model should be one of [%s]", req.Model, modelStr)
-	}
+	//if req.Model == "" {
+	//	return errors.New("err: model required in request")
+	//}
+	//if !(req.Model == modelChat || req.Model == modelReasoner) {
+	//	return fmt.Errorf("err: invalid model %q; model should be one of [%s]", req.Model, modelStr)
+	//}
 	return nil
 }
 

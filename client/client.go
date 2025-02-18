@@ -185,7 +185,7 @@ func (c *Client) PingChatCompletions(ctx context.Context, inputMessage string) (
 }
 
 func (c *Client) do(ctx context.Context, chatReq *request.ChatCompletionsRequest) (io.ReadCloser, error) {
-	url := fmt.Sprintf(`%s/chat/completions`, internal.BASE_URL)
+	url := fmt.Sprintf(`%s/chat/completions`, c.Config.BaseURL)
 
 	in := new(bytes.Buffer)
 	err := json.NewEncoder(in).Encode(chatReq)
@@ -237,8 +237,9 @@ func validateChatParams(chatReq *request.ChatCompletionsRequest, wantStream bool
 	if chatReq.Stream != wantStream {
 		return fmt.Errorf(`err: stream should be %v`, wantStream)
 	}
-	if chatReq.Model != wantModel {
-		return fmt.Errorf(`err: model should be %q`, wantModel)
-	}
+
+	//if chatReq.Model != wantModel {
+	//	return fmt.Errorf(`err: model should be %q`, wantModel)
+	//}
 	return nil
 }
