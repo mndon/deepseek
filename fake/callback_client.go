@@ -3,8 +3,8 @@ package fake
 import (
 	"context"
 
-	"github.com/go-deepseek/deepseek/request"
-	"github.com/go-deepseek/deepseek/response"
+	"github.com/mndon/deepseek/request"
+	"github.com/mndon/deepseek/response"
 )
 
 type Callbacks struct {

@@ -3,10 +3,10 @@ package deepseek
 import (
 	"context"
 
-	"github.com/go-deepseek/deepseek/client"
-	"github.com/go-deepseek/deepseek/config"
-	"github.com/go-deepseek/deepseek/request"
-	"github.com/go-deepseek/deepseek/response"
+	"github.com/mndon/deepseek/client"
+	"github.com/mndon/deepseek/config"
+	"github.com/mndon/deepseek/request"
+	"github.com/mndon/deepseek/response"
 )
 
 const DEFAULT_TIMEOUT_SECONDS = 120

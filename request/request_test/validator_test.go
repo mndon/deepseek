@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/go-deepseek/deepseek"
-	"github.com/go-deepseek/deepseek/request"
+	"github.com/mndon/deepseek"
+	"github.com/mndon/deepseek/request"
 	"github.com/stretchr/testify/assert"
 )
 

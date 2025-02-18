@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/go-deepseek/deepseek"
-	"github.com/go-deepseek/deepseek/request"
+	"github.com/mndon/deepseek"
+	"github.com/mndon/deepseek/request"
 )
 
 /*
